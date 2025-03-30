@@ -1,0 +1,292 @@
+/* Safari-specific fixes and optimizations */
+
+/* Add a class specifically for our project cards */
+.apple-style-project-card {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Safari-specific optimizations for hardware acceleration and preventing flickering */
+@media not all and (min-resolution:.001dpcm) { 
+  @supports (-webkit-appearance:none) {
+    .safari-image-container {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      -webkit-perspective: 1000px;
+      perspective: 1000px;
+      -webkit-font-smoothing: antialiased;
+      -webkit-transform-style: preserve-3d;
+      transform-style: preserve-3d;
+    }
+
+    .safari-image-container img {
+      -webkit-user-drag: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+    
+    /* Smooth scrolling for iOS Safari */
+    html, body {
+      -webkit-overflow-scrolling: touch;
+      height: -webkit-fill-available;
+    }
+    
+    /* Fix for iOS Safari scrolling issues */
+    body {
+      position: relative;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior-y: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Improve animations in Safari */
+    .transition-transform, 
+    .transition-opacity, 
+    .transition-all {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+    
+    /* Specific fixes for our project section */
+    .apple-style-project-card {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      -webkit-perspective: 1000;
+      perspective: 1000;
+    }
+    
+    /* PDF viewer optimizations for iOS Safari */
+    .ios-pdf-viewer {
+      width: 100%;
+      height: 100%;
+      -webkit-overflow-scrolling: touch;
+      overflow-y: scroll;
+    }
+    
+    /* Force iOS Safari to use native PDF viewer */
+    object[type="application/pdf"],
+    embed[type="application/pdf"] {
+      display: block;
+      width: 100%;
+      height: 100vh;
+      max-height: 100%;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Improved download link handling for Safari */
+    a[download] {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+    }
+    
+    /* Fix for download buttons on iOS */
+    a[download] svg {
+      pointer-events: none;
+    }
+    
+    /* iOS Hamburger Menu Styling */
+    .hamburger-menu {
+      /* Ensure it doesn't use mix-blend-mode */
+      mix-blend-mode: normal !important;
+      z-index: 999;
+    }
+    
+    /* Ensure the hamburger menu is white on iOS */
+    [data-ios-nav="true"] span {
+      background-color: #ffffff !important;
+    }
+    
+    /* Ensure transitions are smooth */
+    .hamburger-menu span {
+      transition: background-color 0.2s ease;
+    }
+  }
+} 
+
+/* General PDF viewer improvements for all browsers */
+.pdf-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: rgba(255, 255, 255, 0.95);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* PDF object styles for cross-browser compatibility */
+.pdf-object {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Make sure PDF is properly displayed on Android WebView */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .pdf-object {
+    height: 100vh;
+  }
+}
+
+/* Download link styles for all browsers */
+a[download] {
+  transition: all 0.2s ease;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+a[download]:active {
+  opacity: 0.7;
+  transform: scale(0.98);
+}
+
+/* Add touch-friendly tap area */
+a[download]:before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  z-index: -1;
+}
+
+/* Download icon animation */
+a[download] svg {
+  transition: transform 0.2s ease;
+}
+
+a[download]:hover svg,
+a[download]:focus svg {
+  transform: translateY(2px);
+} 
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  html {
+    height: -webkit-fill-available;
+  }
+  
+  body {
+    min-height: -webkit-fill-available;
+    overflow-y: auto !important;
+    overscroll-behavior-y: none;
+  }
+  
+  /* Fix for momentum scrolling */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevent elastic overscroll effect */
+  body {
+    position: relative;
+    overflow: auto;
+  }
+  
+  /* Fix for nested scrollable areas */
+  .scrollable-container {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+  }
+  
+  /* iOS-specific container for smooth scrolling */
+  .ios-scroll-container {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+  
+  /* Optimize performance for iOS scrolling */
+  .ios-device {
+    /* Disable animations that might cause lag */
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  
+  /* Optimize scrollable elements on iOS */
+  .ios-scrollable {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    /* Prevent rubber-banding/bounce effect */
+    overscroll-behavior: none;
+    /* Optimize rendering */
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  
+  /* Additional hamburger menu fixes for iOS */
+  .hamburger-menu {
+    /* Hardware acceleration */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    /* Ensure it's always visible */
+    opacity: 1 !important;
+  }
+  
+  /* Ensure the hamburger menu is white on iOS */
+  [data-ios-nav="true"] span {
+    background-color: #fff !important;
+    /* Add a subtle shadow to ensure visibility against any background */
+    filter: drop-shadow(0px 0px 1px rgba(0,0,0,0.5));
+  }
+  
+  /* Prevent lag on fixed elements during scroll */
+  .fixed, 
+  [class*="fixed-"], 
+  .sticky, 
+  [class*="sticky-"] {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
+  }
+}
+
+/* Additional iOS optimizations for smoother scrolling */
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px) {
+  * {
+    /* Reduce animation complexity on high-DPI iOS devices */
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  body {
+    /* Optimize rendering */
+    text-rendering: optimizeSpeed;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  /* Improve touch response */
+  a, button, input, select, textarea {
+    touch-action: manipulation;
+  }
+  
+  /* Ensure hamburger menu is visible on high-DPI devices */
+  .hamburger-menu {
+    /* Add a subtle shadow to ensure visibility against any background */
+    filter: drop-shadow(0px 0px 1px rgba(0,0,0,0.5));
+  }
+  
+  /* Ensure the hamburger menu is white on iOS */
+  [data-ios-nav="true"] span {
+    background-color: #fff !important;
+  }
+}

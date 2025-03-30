@@ -1,0 +1,684 @@
+@import "tailwindcss";
+@import "./safari-compat.css";  /* Safari-specific fixes */
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+@font-face {
+  font-family: "SequelSansRegular";
+  src: url("/Fonts/Sequel-Sans-Regular.otf") format("opentype");
+}
+@font-face {
+  font-family: "SequelSansLightItalic";
+  src: url("/Fonts/Sequel-Sans-Light-italic.otf") format("opentype");
+}
+@font-face {
+  font-family: "SequelSansLightRegular";
+  src: url("/Fonts/Sequel-Sans-Light-Regular.otf") format("opentype");
+}
+
+.font-light-italic {
+  font-family: SequelSansLightItalic;
+}
+.font-light-regular {
+  font-family: SequelSansLightRegular;
+}
+.font-regular {
+  font-family: SequelSansRegular;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    overflow-x: hidden;
+    width: 100%;
+    /* iOS specific fixes */
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* iOS video display fixes */
+  video {
+    object-fit: contain;
+    object-position: center;
+    -webkit-object-fit: contain;
+    -webkit-object-position: center;
+    max-width: 100%;
+    height: auto;
+    /* iOS fullscreen prevention */
+    position: relative !important;
+    z-index: 1;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+  }
+  
+  /* iOS specific touch handling */
+  @supports (-webkit-touch-callout: none) {
+    video {
+      /* Fix for iOS not respecting playsinline */
+      will-change: transform;
+    }
+    
+    /* Prevent unwanted behavior on iOS */
+    body, html {
+      height: 100%;
+      width: 100%;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Additional iOS momentum scrolling fix */
+    .ios-scroll-container {
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+  
+  html {
+    @apply text-base;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Responsive text size adjustments */
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 1536px) {
+    html {
+      font-size: 18px;
+    }
+  }
+
+  /* Improved touch targets for mobile */
+  @media (max-width: 768px) {
+    button, a, [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+
+  /* Custom scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 9px; /* Default width for smaller screens */
+    padding: 4px;
+  }
+
+  /* Smaller scrollbar for larger screens */
+  @media (min-width: 768px) {
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* Utility classes for responsive design */
+.responsive-container {
+  @apply w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20;
+}
+
+.responsive-text-heading {
+  @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl;
+}
+
+.responsive-text-subheading {
+  @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+}
+
+.responsive-padding {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .responsive-padding {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .responsive-padding {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-padding {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-padding {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+.responsive-margin {
+  @apply my-4 sm:my-6 md:my-8 lg:my-10 xl:my-12;
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.141 0.005 285.823);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.141 0.005 285.823);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.141 0.005 285.823);
+  --primary: oklch(0.21 0.006 285.885);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.967 0.001 286.375);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --muted: oklch(0.967 0.001 286.375);
+  --muted-foreground: oklch(0.552 0.016 285.938);
+  --accent: oklch(0.967 0.001 286.375);
+  --accent-foreground: oklch(0.21 0.006 285.885);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.92 0.004 286.32);
+  --input: oklch(0.92 0.004 286.32);
+  --ring: oklch(0.705 0.015 286.067);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.21 0.006 285.885);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.705 0.015 286.067);
+}
+
+.dark {
+  --background: oklch(0.141 0.005 285.823);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.141 0.005 285.823);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.141 0.005 285.823);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.21 0.006 285.885);
+  --secondary: oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.274 0.006 286.033);
+  --muted-foreground: oklch(0.705 0.015 286.067);
+  --accent: oklch(0.274 0.006 286.033);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.274 0.006 286.033);
+  --input: oklch(0.274 0.006 286.033);
+  --ring: oklch(0.442 0.017 285.786);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.274 0.006 286.033);
+  --sidebar-ring: oklch(0.442 0.017 285.786);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* Container padding for larger screens */
+@media (min-width: 768px) {
+  .-lg.cb-contact-container, 
+  .-lg.cb-entrylist-container, 
+  .-lg.cb-featured-container, 
+  .-lg.cb-footer-container, 
+  .-lg.cb-modal_box-container, 
+  .-lg.cb-nextcase-container, 
+  .-lg.cb-outro-container, 
+  .-lg.cb-overview-container, 
+  .-lg.cb-screenshot-container, 
+  .-lg.cb-smfeed-container, 
+  .-lg.cb-splitshow-container, 
+  .-lg.cb-summary-container, 
+  .-lg.cb-tophead-container, 
+  .-lg.cb-work-container, 
+  .cb-container.-lg {
+    padding: 0 10.625vw;
+  }
+  
+  .agency-tagline {
+    font-family: SequelSansLightItalic;
+    font-size: 1.25rem;
+    text-align: right;
+  }
+  
+  .agency-tagline span {
+    display: block;
+    line-height: 0.8;
+    margin-bottom: -0.3rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .agency-tagline {
+    display: none;
+  }
+}
+
+/* iOS video container fix */
+.ios-video-container {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px !important;
+  height: 45px !important;
+  border-radius: 22.5px !important;
+  background-color: #3d51e0;
+}
+
+.ios-video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+/* Fix for iOS Safari video positioning */
+@supports (-webkit-touch-callout: none) {
+  .ios-video-container {
+    transform: translateZ(0);
+    -webkit-transform: translate3d(0,0,0);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: radial-gradient(white, black);
+  }
+}
+
+@media (min-width: 640px) {
+  .ios-video-container {
+    width: 80px !important;
+    height: 50px !important;
+    border-radius: 25px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .ios-video-container {
+    width: 90px !important;
+    height: 55px !important;
+    border-radius: 27.5px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ios-video-container {
+    width: 110px !important;
+    height: 65px !important;
+    border-radius: 32.5px !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .ios-video-container {
+    width: 120px !important;
+    height: 70px !important;
+    border-radius: 35px !important;
+  }
+}
+
+.circular-video-container {
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  right: 15%;
+  transform: translateY(-50%);
+  z-index: 10;
+  pointer-events: none; /* Allow clicks to pass through to elements below */
+}
+
+.video-header-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: transparent; /* Make background transparent */
+}
+
+.video-header {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  opacity: 0.85; /* Make video slightly transparent */
+  mix-blend-mode: overlay; /* Blend with content underneath */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .circular-video-container {
+    width: 250px;
+    height: 250px;
+    right: 10%;
+  }
+}
+
+@media (max-width: 768px) {
+  .circular-video-container {
+    width: 200px;
+    height: 200px;
+    right: 5%;
+  }
+}
+
+@media (max-width: 480px) {
+  .circular-video-container {
+    width: 150px;
+    height: 150px;
+    right: 50%;
+    transform: translate(50%, -50%); /* Center horizontally on small screens */
+  }
+}
+
+/* Expertise Section Styles */
+.expertise-section {
+  padding: 4rem 0;
+  background-color: #f8f9fa;
+}
+
+.expertise-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  font-weight: 600;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .skills-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.skill-card {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: #333;
+}
+
+.skill-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.skill-card .icon {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+}
+
+.skill-card h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.skill-card p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+/* Proficiency Bar Styles */
+.proficiency-bar {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.proficiency-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.proficiency-track {
+  height: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.proficiency-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s ease-in-out;
+}
+
+.proficiency-percentage {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  text-align: right;
+}
+
+/* Learn More Link Styles */
+.learn-more-link {
+  margin-top: 1.5rem;
+}
+
+.learn-more-link a {
+  display: inline-flex;
+  align-items: center;
+  color: #0066ff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.learn-more-link a:hover {
+  color: #0055cc;
+}
+
+.learn-more-link a svg {
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.learn-more-link a:hover svg {
+  transform: translateX(3px);
+}
+
+/* Style for cards with background images */
+.skill-card[style*="background-image"] {
+  color: white;
+}
+
+.skill-card[style*="background-image"] h3,
+.skill-card[style*="background-image"] p,
+.skill-card[style*="background-image"] .proficiency-label,
+.skill-card[style*="background-image"] .proficiency-percentage {
+  color: white;
+}
+
+.skill-card[style*="background-image"] .proficiency-track {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.skill-card[style*="background-image"] .learn-more-link a {
+  color: white;
+}
+
+.skill-card[style*="background-image"] .learn-more-link a:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Admin Panel Expertise Manager Styles */
+.colorPickerContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.colorPickerContainer input[type="color"] {
+  width: 50px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.colorPickerContainer input[type="text"] {
+  width: 100px;
+}
+
+.sliderContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.slider {
+  flex-grow: 1;
+}
+
+.skillPreview {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.skillIcon {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+}
+
+.skillContent {
+  flex-grow: 1;
+}
+
+.proficiencyBar {
+  height: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  margin: 1rem 0;
+}
+
+.proficiencyFill {
+  height: 100%;
+  background-color: #0066ff;
+  border-radius: 4px;
+}

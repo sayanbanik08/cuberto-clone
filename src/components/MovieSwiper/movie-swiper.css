@@ -1,0 +1,35 @@
+.swiper-slide-active {
+  margin-left: 16px;
+  margin-right: 16px;
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .swiper-slide-active {
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .swiper-slide-active {
+    margin-left: 32px;
+    margin-right: 32px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .swiper-slide-active {
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+}
+
+.swiper-slide-prev, .swiper-slide-next {
+  margin: 0;
+}
+
+/* Ensure consistent styling between active and inactive slides */
+.swiper-slide-content {
+  transition: all 0.3s ease;
+} 
